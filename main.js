@@ -27,8 +27,6 @@ const addDeleteEvents = () => {
     }
 };
 
-
-
 const createForm = () => {
     let message =
         `<form>
