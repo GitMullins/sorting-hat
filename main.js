@@ -59,13 +59,13 @@ const createForm = () => {
 const createCard = (x) => {
     let message ='';
     x.forEach((student) => {
-        message += `<div class="card row" style="width: 18rem;">
-                    <div class="card-body col">
-                        <h5 class="card-title">${student.name}</h5>
-                        <p class="card-text">${student.house}</p>
-                        <button id=${student.id} class="expelBtn" type="submit">Expel</button>
-                    </div>
-                    </div>`;
+        message += `<div class="card col-4" style="width: 18rem;">`;
+        message += `<div class="card-body">`;
+        message += `<h5 class="card-title">${student.name}</h5>`;
+        message += `<p class="card-text">${student.house}</p>`;
+        message += `<button id=${student.id} class="expelBtn" type="submit">Expel</button>`;
+        message += `</div>`;
+        message += `</div>`;
     });
       printToDom('cardDiv', message);
 };
