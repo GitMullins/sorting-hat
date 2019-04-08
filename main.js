@@ -1,8 +1,22 @@
+const sortButton = document.getElementById('sortBtn');
+const inputStudent = document.getElementById('inputStudent');
+
 const students = [];
 let studentCounter = 1;
+const houses = ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin'];
 
-const clickEvent = (id, e) => {
-    document.getElementById(id).addEventListener('click', e);
+const formButton = () =>{
+    document.getElementById('formBtn').addEventListener('click', createForm);
+};
+
+const clickEvent = () => {
+    if(document.getElementById('sortBtn')){
+    document.getElementById('sortBtn').addEventListener('click', addStudent);
+    }
+};
+
+const getRandomIndex = (x) => {
+    return(Math.floor(Math.random() * x.length));
 };
 
 const printToDom = (divId, print) => {
@@ -10,10 +24,10 @@ const printToDom = (divId, print) => {
 };
 
 const deleteFunction = (e) => {
-    const buttonId = e.target.id;
+    // const buttonId = e.target.id;
     students.forEach((student, index) => {
-        if(student.id === buttonId){
-            student.splice(index, 1);
+        if(student.id === e.target.id){
+            students.splice(index, 1);
         }
     })
     createCard(students);
@@ -21,15 +35,11 @@ const deleteFunction = (e) => {
 };
 
 const addDeleteEvents = () => {
-    const deleteButtons = document.getElementsByClassName('expelBtn');
-    for (let i=0; i < deleteButtons.length; i++){
-        deleteButtons[i].addEventListener('click', deleteFunction);
+    // const deleteButtons = document.getElementsByClassName('expelBtn');
+    for (let i=0; i < document.getElementsByClassName('expelBtn').length; i++){
+        document.getElementsByClassName('expelBtn')[i].addEventListener('click', deleteFunction);
     }
 };
-
-
-
-
 
 
 
@@ -38,34 +48,48 @@ const createForm = () => {
         `<form>
             <div class="form-group">
                 <label>Enter First Year's Name</label>
-                <input type="text" class="form-control" placeholder="Enter student's full name">
+                <input id="inputStudent" type="text" class="form-control" placeholder="Enter student's name">
             </div>
-                <button id="sortBtn" type="submit">Sort!</button>
-        </form>`
+            </form>
+            <button id="sortBtn">Sort!</button>`
         printToDom('formDiv', message);
-        if (document.getElementById('sortBtn')){
-            clickEvent('sortBtn', createCard);
-            };            
-};
+        clickEvent();
+    };
 
-const createCard = () => {
-    let message =
-        `<div class="card col-3" style="width: 18rem;">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <button id="expelBtn" type="submit">Expel</button>
-          </div>
-        </div>`
+const createCard = (x) => {
+    let message ='';
+    x.forEach((student) => {
+        message += `<div class="card row" style="width: 18rem;">
+                    <div class="card-body col">
+                        <h5 class="card-title">${student.name}</h5>
+                        <p class="card-text">${student.house}</p>
+                        <button id=${student.id} class="expelBtn" type="submit">Expel</button>
+                    </div>
+                    </div>`;
+    });
       printToDom('cardDiv', message);
 };
 
-const Btns = () => {
-clickEvent('formBtn', createForm);
+const addStudent = (e) => {
+    e.preventDefault();
+    const inputText = document.getElementById('inputStudent').value;
+    let removedItem = houses.splice(getRandomIndex(houses), 1);
+    const newStudent = {
+        name: inputText,
+        id: `student${studentCounter}`,
+        house: removedItem
+    };
+    students.push(newStudent);
+    studentCounter++;
+    createCard(students);
+    addDeleteEvents();
+    houses.push(removedItem);
+    document.getElementById('inputStudent').value = '';
 };
 
 const init = () => {
-    Btns();
+    formButton();
+    clickEvent();
 };
 
 init();
